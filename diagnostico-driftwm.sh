@@ -49,8 +49,15 @@ if [[ ${1:-} == touchpad ]]; then
     echo 'Mueve un dedo por el touchpad durante 10 segundos.'
     bytes=$(sudo timeout 10s cat -- "$device" | wc -c) || status=$?
     printf '%s: %s bytes recibidos del kernel\n' "$device" "$bytes" >"$log"
+    name=$(cat "/sys/class/input/${device##*/}/device/name" 2>/dev/null || true)
+    printf 'Dispositivo: %s\n' "${name:-nombre no disponible}" >>"$log"
   else
     echo 'udev no enumeró ningún dispositivo como touchpad.' >"$log"
+  fi
+  if kernel_log=$(sudo journalctl -k -b --no-pager); then
+    errors=$(grep -Ei 'PIXA3848|093a:3848|i2c.hid|hid.multitouch' <<<"$kernel_log" |
+      grep -Eic 'error|fail|timed? ?out|timeout|failed|unable' || true)
+    printf 'Mensajes de error del controlador detectados: %s\n' "$errors" >>"$log"
   fi
 else
   section='Arranque de driftwm'

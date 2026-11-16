@@ -13,6 +13,10 @@ sudo() {
     printf 'events'
     return 124
   fi
+  if [[ $* == 'journalctl -k -b --no-pager' ]]; then
+    printf 'i2c_hid_acpi i2c-PIXA3848: failed probe\nLog unrelated\n'
+    return
+  fi
   printf '%s\n' "$*" >>"$CALLS"
 }
 udevadm() { printf 'E: DEVNAME=/dev/input/event2\nE: ID_INPUT_KEYBOARD=1\n\nE: DEVNAME=/dev/input/event7\nE: ID_INPUT_TOUCHPAD=1\n'; }
@@ -48,4 +52,6 @@ grep -q 'No GPU with connected displays found' "$scratch/failure"/driftwm/*.md
 
 XDG_STATE_HOME="$scratch/touchpad" UPLOAD_OK=true GREETD_ACTIVE=false bash "$script" touchpad >"$scratch/output"
 grep -q 'event7: 6 bytes recibidos' "$scratch/touchpad"/driftwm/*.md
+grep -q 'Mensajes de error del controlador detectados: 1' "$scratch/touchpad"/driftwm/*.md
+if grep -Eq 'failed probe|Log unrelated' "$scratch/touchpad"/driftwm/*.md; then exit 1; fi
 grep -q '/issues/123' "$scratch/output"
