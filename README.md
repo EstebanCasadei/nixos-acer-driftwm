@@ -24,6 +24,7 @@ Git ignora `local/` y el lock inicial. `path:` permite que Nix lea esos archivos
 Prueba el primer despliegue desde una TTY. `test` activa la configuración durante el arranque actual y conserva la generación predeterminada del próximo arranque. Ejecuta `switch` después de comprobar que tienes acceso a la consola y que el resultado es el esperado. [Manual de NixOS](https://nixos.org/manual/nixos/stable/#sec-changing-config)
 
 ```bash
+nix flake lock "path:$HOME/nixos-acer-driftwm" &&
 sudo nixos-rebuild test --flake "path:$HOME/nixos-acer-driftwm#nixos" --no-update-lock-file
 ```
 
@@ -39,6 +40,8 @@ sudo nixos-rebuild switch --flake "path:$HOME/nixos-acer-driftwm#nixos" --no-upd
 Para volver a la generación anterior tras un `switch`, usa `sudo nixos-rebuild switch --rollback`. También puedes seleccionarla desde el menú de arranque. [Manual de NixOS](https://nixos.org/manual/nixos/stable/#sec-rollback)
 
 ## Diagnosticar driftwm desde el Acer
+
+Si la prueba incluye un cambio en el flake, ejecuta `bash probar.sh` después de `git pull`. Ajusta el lock local, activa la compilación con `nixos-rebuild test` y ejecuta el diagnóstico. La generación predeterminada del próximo arranque se conserva.
 
 Abre una TTY con tu usuario habitual y ejecuta lo siguiente. El script detiene `greetd` durante la prueba si estaba activo y lo vuelve a iniciar al salir. La prueba dura hasta 20 segundos, más hasta 5 segundos si hace falta forzar el cierre de driftwm.
 
