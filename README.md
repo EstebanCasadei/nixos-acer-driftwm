@@ -48,6 +48,10 @@ Atajos de driftwm (`Super` es la tecla con el logo de Windows):
 - **Super + D** abre el lanzador Fuzzel.
 - **Super + Enter** abre la terminal Foot.
 - **Super + Shift + N** abre o cierra el panel de notificaciones.
+- **Impr Pant** copia la pantalla completa. **Shift + Impr Pant** copia el área que selecciones.
+- **Super + L** bloquea la sesión. Las teclas del Acer ajustan el brillo y el volumen.
+
+La barra agrupa el lanzador, la fecha y los controles del equipo. Puedes ajustar el brillo y el volumen con la rueda sobre sus indicadores. El aspecto de la barra se edita en `desktop/waybar.css` y los bordes de las ventanas en `desktop/driftwm.toml`.
 
 ## Diagnosticar driftwm desde el Acer
 

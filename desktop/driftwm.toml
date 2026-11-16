@@ -1,7 +1,20 @@
-autostart = ["swaync", "waybar --config /etc/waybar/acer.json"]
+autostart = ["swaync", "waybar -c /etc/waybar/acer.json -s /etc/waybar/acer.css"]
 
 [input.keyboard]
 layout = "es"
 
+[decorations]
+border_width = 2
+border_color = "#344658"
+border_color_focused = "#8fcedb"
+
+[snap]
+outer_gap = 16.0
+
 [keybindings]
+"mod+l" = "spawn swaylock -f -c 111923 -kl"
 "mod+shift+n" = "spawn swaync-client -t"
+"XF86AudioRaiseVolume" = "spawn pactl set-sink-volume @DEFAULT_SINK@ +5%"
+"XF86AudioLowerVolume" = "spawn pactl set-sink-volume @DEFAULT_SINK@ -5%"
+"XF86AudioMute" = "spawn pactl set-sink-mute @DEFAULT_SINK@ toggle"
+"shift+Print" = 'spawn region=$(slurp -d) && grim -g "$region" - | wl-copy --type image/png'

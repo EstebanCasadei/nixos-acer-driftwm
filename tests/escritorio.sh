@@ -18,3 +18,15 @@ if CONFIG_OK=false bash "$script"; then exit 1; fi
 CONFIG_OK=true bash "$script"
 grep -qx personal "$scratch"/driftwm/respaldo.*/config.toml
 grep -Fq '/etc/driftwm/acer.toml' "$CALLS"
+
+capture=$(sed -n "s/^\"shift+Print\" = 'spawn \(.*\)'$/\1/p" "$(dirname -- "$script")/desktop/driftwm.toml")
+slurp() { [[ $SELECTED == yes ]] && echo '10,20 30x40'; }
+grim() { [[ $* == '-g 10,20 30x40 -' ]] && echo 'imagen'; }
+wl-copy() { [[ $* == '--type image/png' ]] && cat >"$CALLS"; }
+export -f slurp grim wl-copy
+
+: >"$CALLS"
+if SELECTED=no bash -c "$capture"; then exit 1; fi
+[[ ! -s $CALLS ]]
+SELECTED=yes bash -e -o pipefail -c "$capture"
+grep -qx imagen "$CALLS"

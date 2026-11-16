@@ -1,0 +1,42 @@
+@define-color panel #111923;
+@define-color divider #344658;
+@define-color ink #e7edf4;
+@define-color accent #8fcedb;
+@define-color warning #f3b97c;
+@define-color critical #f4a2a7;
+
+window#waybar {
+  background: transparent;
+  color: @ink;
+  font-family: Inter, sans-serif;
+  font-size: 13px;
+}
+
+.modules-left, .modules-center, .modules-right {
+  background-color: @panel;
+  border: 1px solid @divider;
+  border-radius: 12px;
+}
+
+#custom-launcher, #clock, #custom-notifications {
+  padding: 0 13px;
+  color: @accent;
+  font-weight: 600;
+}
+
+#backlight, #pulseaudio, #network, #battery {
+  padding: 0 10px;
+  border-right: 1px solid @divider;
+}
+
+#pulseaudio.muted, #network.disconnected, #battery.warning {
+  color: @warning;
+}
+
+#battery.critical:not(.charging) {
+  color: @critical;
+}
+
+#battery.charging {
+  color: @accent;
+}

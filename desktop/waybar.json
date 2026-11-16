@@ -1,17 +1,32 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 30,
-  "spacing": 12,
+  "height": 36,
+  "margin-top": 10,
+  "margin-left": 14,
+  "margin-right": 14,
+  "modules-left": ["custom/launcher"],
   "modules-center": ["clock"],
-  "modules-right": ["network", "battery", "custom/notifications"],
-  "clock": { "format": "{:%H:%M}", "tooltip-format": "{:%d/%m/%Y}" },
+  "modules-right": ["backlight", "pulseaudio", "network", "battery", "custom/notifications"],
+  "custom/launcher": {
+    "format": "Aplicaciones",
+    "on-click": "fuzzel"
+  },
+  "clock": { "format": "{:%d/%m  %H:%M}", "tooltip-format": "{:%d/%m/%Y}" },
+  "backlight": { "format": "Brillo {percent}%", "min-brightness": 5.0 },
+  "pulseaudio": {
+    "format": "Vol. {volume}%",
+    "format-muted": "Silencio",
+    "scroll-step": 5.0,
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+  },
   "network": {
     "format-wifi": "Wi-Fi {signalStrength}%",
     "format-ethernet": "Ethernet",
     "format-disconnected": "Sin red"
   },
   "battery": {
+    "states": { "warning": 25, "critical": 12 },
     "format": "Batería {capacity}%",
     "format-charging": "Cargando {capacity}%"
   },
