@@ -41,7 +41,7 @@ Para volver a la generación anterior tras un `switch`, usa `sudo nixos-rebuild 
 
 ## Configurar el escritorio
 
-En una TTY, desde el clon, ejecuta `git pull --ff-only && bash escritorio.sh`. El script activa la configuración con `nixos-rebuild test`, valida el TOML de driftwm y guarda un respaldo de cualquier configuración personal que sustituya. Vuelve a iniciar sesión en driftwm para probar el teclado latinoamericano (`latam`), Waybar y el botón **Notificaciones**. Cuando funcione como esperas, aplica `switch` con el comando de la sección anterior para conservar la generación al reiniciar.
+En una TTY, desde el clon, ejecuta `git pull --ff-only && bash escritorio.sh`. El script activa la configuración con `nixos-rebuild test`, valida el TOML de driftwm y guarda un respaldo de cualquier configuración personal que sustituya. Vuelve a iniciar sesión en driftwm para probar el teclado Español (España), Waybar y el botón **Notificaciones**. Cuando funcione como esperas, aplica `switch` con el comando de la sección anterior para conservar la generación al reiniciar.
 
 ## Diagnosticar driftwm desde el Acer
 
