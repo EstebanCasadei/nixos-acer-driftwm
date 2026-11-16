@@ -16,25 +16,25 @@ dbus-run-session() {
   echo 'No GPU with connected displays found'
   return 1
 }
-export -f tty systemctl sudo driftwm nixos-version dbus-run-session
-
-GREETD_ACTIVE=true bash "$script" >"$scratch/output"
-[[ $(cat "$CALLS") == $'systemctl stop greetd.service\nsystemctl start greetd.service' ]]
-grep -q 'Código de salida `1`' "$XDG_STATE_HOME"/driftwm/*.md
-grep -q 'No GPU with connected displays found' "$XDG_STATE_HOME"/driftwm/*.md
-publish=$(sed -n '/^  if \[\[/,/^  fi/p' "$scratch/output")
 gh() {
-  case "$1 $2" in
-    'repo view') echo "$PRIVATE" ;;
-    'issue create') echo 'issue create' >>"$CALLS" ;;
-    *) return 1 ;;
-  esac
+  [[ $GH_PROMPT_DISABLED == 1 && $1 == issue && $2 == create ]] || return 99
+  [[ $3 == --repo && $4 == EstebanCasadei/nixos-acer-driftwm && $7 == --body-file ]] || return 99
+  grep -q 'No GPU with connected displays found' "$8" || return 99
+  echo 'issue create' >>"$CALLS"
+  [[ $UPLOAD_OK == true ]] || return 1
+  echo 'https://github.com/EstebanCasadei/nixos-acer-driftwm/issues/123'
 }
-export -f gh
+export -f tty systemctl sudo driftwm nixos-version dbus-run-session gh
+
+UPLOAD_OK=true GREETD_ACTIVE=true bash "$script" >"$scratch/output"
+[[ $(cat "$CALLS") == $'systemctl stop greetd.service\nsystemctl start greetd.service\nissue create' ]]
+grep -q 'Código de salida `1`' "$XDG_STATE_HOME"/driftwm/*.md
+grep -q '/issues/123' "$scratch/output"
 
 : >"$CALLS"
-GREETD_ACTIVE=false bash "$script" >/dev/null
-PRIVATE=false bash -c "$publish" >/dev/null
-[[ ! -s $CALLS ]]
-PRIVATE=true bash -c "$publish"
+if XDG_STATE_HOME="$scratch/failure" UPLOAD_OK=false GREETD_ACTIVE=false bash "$script" >"$scratch/error" 2>&1; then
+  exit 1
+fi
 [[ $(cat "$CALLS") == 'issue create' ]]
+grep -q 'Falló el envío' "$scratch/error"
+grep -q 'No GPU with connected displays found' "$scratch/failure"/driftwm/*.md

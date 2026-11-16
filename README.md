@@ -48,6 +48,4 @@ git pull --ff-only &&
 bash ./diagnostico-driftwm.sh
 ```
 
-Revisa el informe con el comando `less` que imprime el script. El siguiente comando que muestra comprueba la visibilidad del repositorio antes de subir el informe completo. Si el repositorio es público, abre un [issue](https://github.com/EstebanCasadei/nixos-acer-driftwm/issues/new) y pega solo las líneas útiles después de quitar datos privados. Si `gh` falta en la TTY, abre una sesión con `nix-shell -p gh`. Indica también si llegaste a ver el escritorio durante la prueba.
-
-Para pruebas posteriores, descarga el script indicado con `git pull --ff-only` y añade el nuevo informe como comentario en el mismo issue. [Comandos de GitHub CLI para comentar](https://cli.github.com/manual/gh_issue_comment)
+El script crea un [issue](https://github.com/EstebanCasadei/nixos-acer-driftwm/issues) con el informe en cada ejecución y muestra el enlace. Si el repositorio es público, el informe también queda público. Usa tu sesión de GitHub CLI en el Acer y obtiene `gh` temporalmente con Nix si falta. Si el envío falla, muestra dónde guardó la copia local. [Envío de informes con GitHub CLI](https://cli.github.com/manual/gh_issue_create)
