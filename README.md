@@ -34,6 +34,16 @@ sudo nixos-rebuild switch --flake "path:$HOME/nixos-acer-driftwm#nixos" --no-upd
 
 Para volver a la generación anterior tras un `switch`, usa `sudo nixos-rebuild switch --rollback`. También puedes seleccionarla desde el menú de arranque. [Manual de NixOS](https://nixos.org/manual/nixos/stable/#sec-rollback)
 
-## Estado de driftwm
+## Diagnosticar driftwm desde el Acer
 
-Las notas de migración registran un fallo DRM al abrir driftwm con la pantalla interna. Para diagnosticarlo queda pendiente identificar el controlador gráfico y reproducir el fallo desde la TTY del Acer.
+Abre una TTY con tu usuario habitual y ejecuta lo siguiente. El script detiene `greetd` durante la prueba si estaba activo y lo vuelve a iniciar al salir. La prueba dura hasta 20 segundos, más hasta 5 segundos si hace falta forzar el cierre de driftwm.
+
+```bash
+cd "$HOME/nixos-acer-driftwm" &&
+git pull --ff-only &&
+bash ./diagnostico-driftwm.sh
+```
+
+Revisa el informe con el comando `less` que imprime el script. Después, usa el comando `gh issue create` que aparece debajo para subirlo a [Issues del repositorio privado](https://github.com/EstebanCasadei/nixos-acer-driftwm/issues). Si `gh` falta en la TTY, abre primero una sesión con `nix-shell -p gh`. En el issue, indica también si llegaste a ver el escritorio durante la prueba.
+
+Para pruebas posteriores, descarga el script indicado con `git pull --ff-only` y añade el nuevo informe como comentario en el mismo issue. [Comandos de GitHub CLI para comentar](https://cli.github.com/manual/gh_issue_comment)
