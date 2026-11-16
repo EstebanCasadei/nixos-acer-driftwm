@@ -1,0 +1,5 @@
+/local/
+/flake.lock
+/result
+/result-*
+/migracion-nixos-driftwm.md
