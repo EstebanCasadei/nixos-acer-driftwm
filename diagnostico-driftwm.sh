@@ -6,7 +6,7 @@ if [[ $EUID == 0 || ! $(tty) =~ ^/dev/tty[0-9]+$ ]]; then
   exit 1
 fi
 
-if ! command -v driftwm >/dev/null; then
+if [[ ${1:-} != touchpad ]] && ! command -v driftwm >/dev/null; then
   echo 'driftwm no está disponible en la sesión actual.' >&2
   exit 1
 fi
@@ -34,10 +34,31 @@ if systemctl is-active --quiet greetd.service; then
   sudo systemctl stop greetd.service
 fi
 
-echo 'Probando driftwm durante un máximo de 20 segundos.'
 status=0
-RUST_LOG=driftwm=debug,smithay=debug dbus-run-session -- \
-  timeout --foreground --kill-after=5s 20s driftwm --backend udev >"$log" 2>&1 || status=$?
+if [[ ${1:-} == touchpad ]]; then
+  section='Eventos del touchpad'
+  title='Diagnóstico del touchpad en el Acer'
+  device=$(udevadm info --export-db | awk -v RS='' '
+    /(^|\n)E: ID_INPUT_TOUCHPAD=1(\n|$)/ && match($0, /E: DEVNAME=\/dev\/input\/event[0-9]+/) && !found {
+      print substr($0, RSTART + 11, RLENGTH - 11)
+      found = 1
+    }
+  ')
+  if [[ -n $device ]]; then
+    sudo -v
+    echo 'Mueve un dedo por el touchpad durante 10 segundos.'
+    bytes=$(sudo timeout 10s cat -- "$device" | wc -c) || status=$?
+    printf '%s: %s bytes recibidos del kernel\n' "$device" "$bytes" >"$log"
+  else
+    echo 'udev no enumeró ningún dispositivo como touchpad.' >"$log"
+  fi
+else
+  section='Arranque de driftwm'
+  title='Diagnóstico de driftwm en el Acer'
+  echo 'Probando driftwm durante un máximo de 20 segundos.'
+  RUST_LOG=driftwm=debug,smithay=debug dbus-run-session -- \
+    timeout --foreground --kill-after=5s 20s driftwm --backend udev >"$log" 2>&1 || status=$?
+fi
 
 {
   printf '## Sistema\n\n- NixOS `%s`\n- Kernel `%s`\n' "$(nixos-version)" "$(uname -r)"
@@ -48,7 +69,7 @@ RUST_LOG=driftwm=debug,smithay=debug dbus-run-session -- \
     ls -l /sys/class/drm/card*/device/driver 2>/dev/null | sed 's/^/    /' || true
   fi
   grep -H . /sys/class/drm/card*-*/status 2>/dev/null | sed 's/^/    /' || true
-  printf '\n## Arranque de driftwm\n\nCódigo de salida `%s` (124 indica que se alcanzó el límite de tiempo).\n\n' "$status"
+  printf '\n## %s\n\nCódigo de salida `%s` (124 indica que se alcanzó el límite de tiempo).\n\n' "$section" "$status"
   tail -n 60 -- "$log" | sed 's/^/    /'
 } >"$report"
 
@@ -64,7 +85,7 @@ fi
 echo 'Publicando el informe en GitHub…'
 if ! GH_PROMPT_DISABLED=1 "${github[@]}" issue create \
   --repo EstebanCasadei/nixos-acer-driftwm \
-  --title 'Diagnóstico de driftwm en el Acer' --body-file "$report"; then
+  --title "$title" --body-file "$report"; then
   echo 'Falló el envío. El informe sigue guardado en el Acer.' >&2
   exit 1
 fi

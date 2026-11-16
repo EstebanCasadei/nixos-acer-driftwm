@@ -8,7 +8,14 @@ export XDG_STATE_HOME="$scratch/state" CALLS="$scratch/calls"
 
 tty() { echo /dev/tty3; }
 systemctl() { [[ $GREETD_ACTIVE == true ]]; }
-sudo() { printf '%s\n' "$*" >>"$CALLS"; }
+sudo() {
+  if [[ $* == 'timeout 10s cat -- /dev/input/event7' ]]; then
+    printf 'events'
+    return 124
+  fi
+  printf '%s\n' "$*" >>"$CALLS"
+}
+udevadm() { printf 'E: DEVNAME=/dev/input/event2\nE: ID_INPUT_KEYBOARD=1\n\nE: DEVNAME=/dev/input/event7\nE: ID_INPUT_TOUCHPAD=1\n'; }
 driftwm() { return 1; }
 nixos-version() { echo test; }
 dbus-run-session() {
@@ -19,12 +26,12 @@ dbus-run-session() {
 gh() {
   [[ $GH_PROMPT_DISABLED == 1 && $1 == issue && $2 == create ]] || return 99
   [[ $3 == --repo && $4 == EstebanCasadei/nixos-acer-driftwm && $7 == --body-file ]] || return 99
-  grep -q 'No GPU with connected displays found' "$8" || return 99
+  grep -Eq 'No GPU with connected displays found|event7: 6 bytes recibidos' "$8" || return 99
   echo 'issue create' >>"$CALLS"
   [[ $UPLOAD_OK == true ]] || return 1
   echo 'https://github.com/EstebanCasadei/nixos-acer-driftwm/issues/123'
 }
-export -f tty systemctl sudo driftwm nixos-version dbus-run-session gh
+export -f tty systemctl sudo udevadm driftwm nixos-version dbus-run-session gh
 
 UPLOAD_OK=true GREETD_ACTIVE=true bash "$script" >"$scratch/output"
 [[ $(cat "$CALLS") == $'systemctl stop greetd.service\nsystemctl start greetd.service\nissue create' ]]
@@ -38,3 +45,7 @@ fi
 [[ $(cat "$CALLS") == 'issue create' ]]
 grep -q 'Falló el envío' "$scratch/error"
 grep -q 'No GPU with connected displays found' "$scratch/failure"/driftwm/*.md
+
+XDG_STATE_HOME="$scratch/touchpad" UPLOAD_OK=true GREETD_ACTIVE=false bash "$script" touchpad >"$scratch/output"
+grep -q 'event7: 6 bytes recibidos' "$scratch/touchpad"/driftwm/*.md
+grep -q '/issues/123' "$scratch/output"
