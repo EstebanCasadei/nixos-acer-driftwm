@@ -55,4 +55,4 @@ El script crea un [issue](https://github.com/EstebanCasadei/nixos-acer-driftwm/i
 
 Para comprobar el touchpad desde la TTY, ejecuta `bash diagnostico-driftwm.sh touchpad`. Mueve un dedo al aparecer el aviso. El informe incluye el total de bytes recibidos del dispositivo.
 
-Para reinicializar el controlador del PIXA3848 antes de medir, usa `bash diagnostico-driftwm.sh touchpad reset`. El reinicio afecta solo a ese dispositivo durante la sesión actual. Si falla y el touchpad desaparece, reinicia el Acer.
+Para reinicializar el controlador del PIXA3848 antes de medir, usa `bash pad.sh`. El reinicio afecta solo a ese dispositivo durante la sesión actual. Si falla y el touchpad desaparece, reinicia el Acer.

@@ -51,7 +51,7 @@ fi
 grep -q 'Falló el envío' "$scratch/error"
 grep -q 'No GPU with connected displays found' "$scratch/failure"/driftwm/*.md
 
-XDG_STATE_HOME="$scratch/touchpad" UPLOAD_OK=true GREETD_ACTIVE=false bash "$script" touchpad reset >"$scratch/output"
+XDG_STATE_HOME="$scratch/touchpad" UPLOAD_OK=true GREETD_ACTIVE=false bash "$(dirname -- "$script")/pad.sh" >"$scratch/output"
 grep -q '/sys/bus/i2c/drivers/i2c_hid_acpi i2c-PIXA3848:01' "$CALLS"
 grep -q 'Reinicio del controlador completado' "$scratch/touchpad"/driftwm/*.md
 grep -q 'event7: 6 bytes recibidos' "$scratch/touchpad"/driftwm/*.md
