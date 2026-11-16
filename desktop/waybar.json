@@ -1,0 +1,22 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 30,
+  "spacing": 12,
+  "modules-center": ["clock"],
+  "modules-right": ["network", "battery", "custom/notifications"],
+  "clock": { "format": "{:%H:%M}", "tooltip-format": "{:%d/%m/%Y}" },
+  "network": {
+    "format-wifi": "Wi-Fi {signalStrength}%",
+    "format-ethernet": "Ethernet",
+    "format-disconnected": "Sin red"
+  },
+  "battery": {
+    "format": "Batería {capacity}%",
+    "format-charging": "Cargando {capacity}%"
+  },
+  "custom/notifications": {
+    "format": "Notificaciones",
+    "on-click": "swaync-client -t"
+  }
+}
