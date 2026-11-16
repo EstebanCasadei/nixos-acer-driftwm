@@ -51,7 +51,7 @@ Atajos de driftwm (`Super` es la tecla con el logo de Windows):
 - **Impr Pant** copia la pantalla completa. **Shift + Impr Pant** copia el área que selecciones.
 - **Super + L** bloquea la sesión. Las teclas del Acer ajustan el brillo y el volumen.
 
-La barra agrupa el lanzador, la fecha y los controles del equipo. Puedes ajustar el brillo y el volumen con la rueda sobre sus indicadores. El aspecto de la barra se edita en `desktop/waybar.css` y los bordes de las ventanas en `desktop/driftwm.toml`.
+La barra toma de Orpheus los grupos sujetos al borde superior y el reloj central destacado. Usa una paleta oscura con acentos cálidos que se repite en Fuzzel, Foot, SwayNC y los bordes de driftwm. Puedes ajustar el brillo y el volumen con la rueda sobre sus indicadores. Los archivos del tema están en `desktop/`. El instalador valida las configuraciones de driftwm, Fuzzel y Foot. [Referencia de Orpheus](https://github.com/Ryoku-dev/ryoku/blob/main/docs/barstyles.md#orpheus)
 
 ## Diagnosticar driftwm desde el Acer
 

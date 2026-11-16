@@ -1,0 +1,19 @@
+.control-center, .notification-background .notification {
+  background: #211d25;
+  color: #f1e7dc;
+  border: 1px solid #443d48;
+  border-radius: 18px;
+}
+
+.control-center .widget-title {
+  color: #eac4a7;
+}
+
+.control-center .widget-title button {
+  background: #49384a;
+  color: #f1e7dc;
+}
+
+.notification .summary {
+  color: #eac4a7;
+}

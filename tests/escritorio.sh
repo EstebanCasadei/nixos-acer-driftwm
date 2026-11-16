@@ -8,8 +8,10 @@ export XDG_CONFIG_HOME="$scratch" CALLS="$scratch/calls"
 
 sudo() { [[ $* == 'nixos-rebuild test --flake path:'*'#nixos --no-update-lock-file' ]]; }
 driftwm() { [[ $* == '--config /etc/driftwm/acer.toml --check-config' && $CONFIG_OK == true ]]; }
+fuzzel() { [[ $* == '--config=/etc/fuzzel/acer.ini --check-config' ]]; }
+foot() { [[ $* == '--config=/etc/foot/acer.ini --check-config' ]]; }
 ln() { printf '%s\n' "$*" >"$CALLS"; }
-export -f sudo driftwm ln
+export -f sudo driftwm fuzzel foot ln
 
 mkdir "$scratch/driftwm"
 printf 'personal\n' >"$scratch/driftwm/config.toml"

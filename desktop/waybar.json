@@ -1,18 +1,21 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 36,
-  "margin-top": 10,
-  "margin-left": 14,
-  "margin-right": 14,
+  "height": 39,
+  "margin-left": 20,
+  "margin-right": 20,
   "modules-left": ["custom/launcher"],
   "modules-center": ["clock"],
   "modules-right": ["backlight", "pulseaudio", "network", "battery", "custom/notifications"],
   "custom/launcher": {
     "format": "Aplicaciones",
-    "on-click": "fuzzel"
+    "on-click": "fuzzel --config=/etc/fuzzel/acer.ini",
+    "tooltip-format": "Abrir aplicaciones (Super + D)"
   },
-  "clock": { "format": "{:%d/%m  %H:%M}", "tooltip-format": "{:%d/%m/%Y}" },
+  "clock": {
+    "format": "{:%H:%M}   <span color='#c7b8c4'>{:%d/%m}</span>",
+    "tooltip-format": "{:%d/%m/%Y}"
+  },
   "backlight": { "format": "Brillo {percent}%", "min-brightness": 5.0 },
   "pulseaudio": {
     "format": "Vol. {volume}%",

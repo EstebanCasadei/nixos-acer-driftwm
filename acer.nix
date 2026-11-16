@@ -21,6 +21,9 @@
   );
 
   environment.etc."driftwm/acer.toml".source = ./desktop/driftwm.toml;
+  environment.etc."foot/acer.ini".source = ./desktop/foot.ini;
+  environment.etc."fuzzel/acer.ini".source = ./desktop/fuzzel.ini;
+  environment.etc."swaync/acer.css".source = ./desktop/swaync.css;
   environment.etc."waybar/acer.json".source = ./desktop/waybar.json;
   environment.etc."waybar/acer.css".source = ./desktop/waybar.css;
 }

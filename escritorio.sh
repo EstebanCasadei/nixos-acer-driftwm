@@ -11,6 +11,8 @@ sudo nixos-rebuild test --flake "path:$PWD#nixos" --no-update-lock-file
 
 source_config=/etc/driftwm/acer.toml
 driftwm --config "$source_config" --check-config
+fuzzel --config=/etc/fuzzel/acer.ini --check-config
+foot --config=/etc/foot/acer.ini --check-config
 config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/driftwm"
 config="$config_dir/config.toml"
 mkdir -p -- "$config_dir"

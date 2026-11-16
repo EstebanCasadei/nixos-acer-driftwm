@@ -1,9 +1,9 @@
-@define-color panel #111923;
-@define-color divider #344658;
-@define-color ink #e7edf4;
-@define-color accent #8fcedb;
-@define-color warning #f3b97c;
-@define-color critical #f4a2a7;
+@define-color panel #211d25;
+@define-color divider #443d48;
+@define-color ink #f1e7dc;
+@define-color accent #eac4a7;
+@define-color warning #eec880;
+@define-color critical #efa0a8;
 
 window#waybar {
   background: transparent;
@@ -15,11 +15,26 @@ window#waybar {
 .modules-left, .modules-center, .modules-right {
   background-color: @panel;
   border: 1px solid @divider;
-  border-radius: 12px;
+  border-top: 0;
+  border-radius: 0 0 18px 18px;
 }
 
-#custom-launcher, #clock, #custom-notifications {
-  padding: 0 13px;
+.modules-center {
+  background-color: #302733;
+  border-color: #624d60;
+  border-radius: 0 0 24px 24px;
+}
+
+#clock {
+  min-width: 132px;
+  padding: 0 16px;
+  color: @ink;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+#custom-launcher, #custom-notifications {
+  padding: 0 15px;
   color: @accent;
   font-weight: 600;
 }
