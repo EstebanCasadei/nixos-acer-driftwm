@@ -38,6 +38,21 @@ status=0
 if [[ ${1:-} == touchpad ]]; then
   section='Eventos del touchpad'
   title='Diagnóstico del touchpad en el Acer'
+  if [[ ${2:-} == reset ]]; then
+    driver=/sys/bus/i2c/drivers/i2c_hid_acpi
+    target=$(find "$driver" -maxdepth 1 -type l -name 'i2c-PIXA3848:*' -printf '%f\n' 2>/dev/null || true)
+    if [[ $target =~ ^i2c-PIXA3848:[[:xdigit:]]{2}$ ]]; then
+      echo 'Reiniciando el controlador del PIXA3848…'
+      if sudo sh -c 'printf "%s" "$2" >"$1/unbind" && printf "%s" "$2" >"$1/bind"' sh "$driver" "$target"; then
+        echo 'Reinicio del controlador completado.' >>"$log"
+        udevadm settle --timeout=10 || true
+      else
+        echo 'Falló el reinicio del controlador. Reinicia el Acer si el dispositivo desapareció.' | tee -a "$log" >&2
+      fi
+    else
+      echo 'Reinicio omitido: no se encontró un único PIXA3848 con el controlador i2c_hid_acpi.' | tee -a "$log"
+    fi
+  fi
   device=$(udevadm info --export-db | awk -v RS='' '
     /(^|\n)E: ID_INPUT_TOUCHPAD=1(\n|$)/ && match($0, /E: DEVNAME=\/dev\/input\/event[0-9]+/) && !found {
       print substr($0, RSTART + 11, RLENGTH - 11)
@@ -48,11 +63,11 @@ if [[ ${1:-} == touchpad ]]; then
     sudo -v
     echo 'Mueve un dedo por el touchpad durante 10 segundos.'
     bytes=$(sudo timeout 10s cat -- "$device" | wc -c) || status=$?
-    printf '%s: %s bytes recibidos del kernel\n' "$device" "$bytes" >"$log"
+    printf '%s: %s bytes recibidos del kernel\n' "$device" "$bytes" >>"$log"
     name=$(cat "/sys/class/input/${device##*/}/device/name" 2>/dev/null || true)
     printf 'Dispositivo: %s\n' "${name:-nombre no disponible}" >>"$log"
   else
-    echo 'udev no enumeró ningún dispositivo como touchpad.' >"$log"
+    echo 'udev no enumeró ningún dispositivo como touchpad.' >>"$log"
   fi
   if kernel_log=$(sudo journalctl -k -b --no-pager); then
     errors=$(grep -Ei 'PIXA3848|093a:3848|i2c.hid|hid.multitouch' <<<"$kernel_log" |
