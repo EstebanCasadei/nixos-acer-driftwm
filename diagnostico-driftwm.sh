@@ -53,4 +53,14 @@ RUST_LOG=driftwm=debug,smithay=debug dbus-run-session -- \
 } >"$report"
 
 printf '\nRevisa el informe con:\n  less %q\n' "$report"
-printf '\nPara subirlo al repositorio privado, ejecuta:\n  gh issue create --repo EstebanCasadei/nixos-acer-driftwm --title "Diagnóstico de driftwm en el Acer" --body-file %q\n' "$report"
+cat <<'EOF'
+
+Para enviar el informe completo, ejecuta este comando. GitHub CLI lo subirá solo si el repositorio es privado.
+  if [[ $(gh repo view EstebanCasadei/nixos-acer-driftwm --json isPrivate --jq .isPrivate) == true ]]; then
+EOF
+printf '    gh issue create --repo EstebanCasadei/nixos-acer-driftwm --title "Diagnóstico de driftwm en el Acer" --body-file %q\n' "$report"
+cat <<'EOF'
+  else
+    echo 'Informe local. Comparte solo las líneas revisadas en un issue público.'
+  fi
+EOF

@@ -22,8 +22,19 @@ GREETD_ACTIVE=true bash "$script" >"$scratch/output"
 [[ $(cat "$CALLS") == $'systemctl stop greetd.service\nsystemctl start greetd.service' ]]
 grep -q 'Código de salida `1`' "$XDG_STATE_HOME"/driftwm/*.md
 grep -q 'No GPU with connected displays found' "$XDG_STATE_HOME"/driftwm/*.md
-grep -q 'gh issue create --repo EstebanCasadei/nixos-acer-driftwm' "$scratch/output"
+publish=$(sed -n '/^  if \[\[/,/^  fi/p' "$scratch/output")
+gh() {
+  case "$1 $2" in
+    'repo view') echo "$PRIVATE" ;;
+    'issue create') echo 'issue create' >>"$CALLS" ;;
+    *) return 1 ;;
+  esac
+}
+export -f gh
 
 : >"$CALLS"
 GREETD_ACTIVE=false bash "$script" >/dev/null
+PRIVATE=false bash -c "$publish" >/dev/null
 [[ ! -s $CALLS ]]
+PRIVATE=true bash -c "$publish"
+[[ $(cat "$CALLS") == 'issue create' ]]

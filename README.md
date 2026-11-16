@@ -4,7 +4,11 @@
 
 ## Preparar la laptop una vez
 
-Clona el repositorio privado en `~/nixos-acer-driftwm` con una cuenta de GitHub que tenga acceso. Si usas HTTPS, puedes configurar tu sesión con [`gh auth login`](https://cli.github.com/manual/gh_auth_login) y [`gh auth setup-git`](https://cli.github.com/manual/gh_auth_setup-git).
+Clona el repositorio en tu directorio personal. Si GitHub te pide acceso, configura tu sesión HTTPS con [`gh auth login`](https://cli.github.com/manual/gh_auth_login) y [`gh auth setup-git`](https://cli.github.com/manual/gh_auth_setup-git).
+
+```bash
+git clone https://github.com/EstebanCasadei/nixos-acer-driftwm.git "$HOME/nixos-acer-driftwm"
+```
 
 Copia la configuración actual y su lock desde la TTY del Acer. Si `configuration.nix` importa otros archivos por rutas relativas, copia también esos archivos bajo `local/` conservando sus rutas. Guarda las credenciales en archivos externos al clon y referencia sus rutas desde la configuración, porque Nix copia la fuente del flake al almacén local.
 
@@ -44,6 +48,6 @@ git pull --ff-only &&
 bash ./diagnostico-driftwm.sh
 ```
 
-Revisa el informe con el comando `less` que imprime el script. Después, usa el comando `gh issue create` que aparece debajo para subirlo a [Issues del repositorio privado](https://github.com/EstebanCasadei/nixos-acer-driftwm/issues). Si `gh` falta en la TTY, abre primero una sesión con `nix-shell -p gh`. En el issue, indica también si llegaste a ver el escritorio durante la prueba.
+Revisa el informe con el comando `less` que imprime el script. El siguiente comando que muestra comprueba la visibilidad del repositorio antes de subir el informe completo. Si el repositorio es público, abre un [issue](https://github.com/EstebanCasadei/nixos-acer-driftwm/issues/new) y pega solo las líneas útiles después de quitar datos privados. Si `gh` falta en la TTY, abre una sesión con `nix-shell -p gh`. Indica también si llegaste a ver el escritorio durante la prueba.
 
 Para pruebas posteriores, descarga el script indicado con `git pull --ff-only` y añade el nuevo informe como comentario en el mismo issue. [Comandos de GitHub CLI para comentar](https://cli.github.com/manual/gh_issue_comment)
