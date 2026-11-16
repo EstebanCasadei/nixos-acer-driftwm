@@ -2,3 +2,6 @@ autostart = ["swaync", "waybar --config /etc/waybar/acer.json"]
 
 [input.keyboard]
 layout = "es"
+
+[keybindings]
+"mod+shift+n" = "spawn swaync-client -t"

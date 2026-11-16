@@ -43,6 +43,12 @@ Para volver a la generación anterior tras un `switch`, usa `sudo nixos-rebuild 
 
 En una TTY, desde el clon, ejecuta `git pull --ff-only && bash escritorio.sh`. El script activa la configuración con `nixos-rebuild test`, valida el TOML de driftwm y guarda un respaldo de cualquier configuración personal que sustituya. Vuelve a iniciar sesión en driftwm para probar el teclado Español (España), Waybar y el botón **Notificaciones**. Cuando funcione como esperas, aplica `switch` con el comando de la sección anterior para conservar la generación al reiniciar.
 
+Atajos de driftwm (`Super` es la tecla con el logo de Windows):
+
+- **Super + D** abre el lanzador Fuzzel.
+- **Super + Enter** abre la terminal Foot.
+- **Super + Shift + N** abre o cierra el panel de notificaciones.
+
 ## Diagnosticar driftwm desde el Acer
 
 Si la prueba incluye un cambio en el flake, ejecuta `bash probar.sh` después de `git pull`. Ajusta el lock local, activa la compilación con `nixos-rebuild test` y ejecuta el diagnóstico. La generación predeterminada del próximo arranque se conserva.
